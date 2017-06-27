@@ -1,6 +1,11 @@
 var api = require('./api.json');
 var https = require('https');
 
+//print temperature
+function printWeather(weather){
+	const message = `The temperature in ${weather.current_observation.observation_location.city } is ${weather.current_observation.temp_c} degrees`;
+	console.log(message);
+}
 
 function get(state, city){
   var queryString = `https://api.wunderground.com/api/${api.key}/conditions/q/${state}/${city}.json`
@@ -15,9 +20,8 @@ function get(state, city){
       //parsing the data
       response.on('end',()=>{
         console.log(queryString);
-        let parsedData = JSON.parse(body);
-          //console.log(parsedData);
-          console.log(`The temperature in ${parsedData.current_observation.observation_location.city } is ${parsedData.current_observation.temp_c}`);
+        let weather = JSON.parse(body);
+        printWeather(weather);
       });//end of on-end
 
     });//end of get-request
